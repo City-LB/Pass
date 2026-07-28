@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<title>City Legacy · Verify Email</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A2540;
+    --sky: #0077C2;
+    --bg: #0B1626;
+    --card: #121F33;
+    --line: rgba(255,255,255,0.10);
+    --text: #F1F5F9;
+    --muted: #94A3B8;
+    --green: #22C55E;
+    --amber: #F59E0B;
+    --red: #EF4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: radial-gradient(1200px 600px at 50% -10%, #1a3a5c 0%, var(--bg) 55%);
+    color: var(--text);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .phone {
+    width: 100%;
+    max-width: 380px;
+    background: linear-gradient(180deg, #15263d 0%, var(--card) 40%);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04) inset;
+    overflow: hidden;
+  }
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 22px 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .header { text-align: center; padding: 8px 24px 18px; }
+  .logo {
+    width: 52px; height: 52px; margin: 0 auto 12px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+    filter: drop-shadow(0 6px 16px rgba(0,119,194,0.35));
+  }
+  .logo span { border-radius: 8px; background: linear-gradient(135deg, #3FC0EF, var(--sky)); }
+  .logo span:nth-child(2), .logo span:nth-child(3) {
+    background: linear-gradient(135deg, var(--sky), #005A94);
+  }
+  .header h1 { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .header p { font-size: 12.5px; color: var(--muted); font-weight: 500; }
+  .badge-row { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+  .badge {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 5px 10px; border-radius: 999px;
+    background: rgba(34,197,94,0.15); color: var(--green);
+    border: 1px solid rgba(34,197,94,0.3);
+  }
+  .badge::before {
+    content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); margin-right: 6px; vertical-align: middle;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.25);
+  }
+  .otp-card {
+    margin: 0 18px 18px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 22px 18px 18px;
+    text-align: center;
+  }
+  .purpose {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #7CC0FF; margin-bottom: 8px;
+  }
+  .otp-digits {
+    font-family: 'Inter', ui-monospace, monospace;
+    font-size: 42px; font-weight: 800; letter-spacing: 0.28em;
+    color: #fff; padding: 8px 0 4px 0.28em;
+    text-shadow: 0 2px 12px rgba(0,119,194,0.35);
+    user-select: all; min-height: 56px;
+  }
+  .timer-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; margin-top: 10px; font-size: 13px; color: var(--muted); font-weight: 600;
+  }
+  .timer-bar {
+    width: 100%; height: 4px; background: rgba(255,255,255,0.08);
+    border-radius: 4px; margin-top: 14px; overflow: hidden;
+  }
+  .timer-fill {
+    height: 100%; width: 100%;
+    background: linear-gradient(90deg, var(--sky), #4FC3FF);
+    border-radius: 4px; transition: width 0.2s linear;
+  }
+  .timer-fill.warn { background: linear-gradient(90deg, var(--amber), #FBBF24); }
+  .timer-fill.danger { background: linear-gradient(90deg, var(--red), #F87171); }
+  .hint {
+    margin: 0 22px 18px; font-size: 12.5px; line-height: 1.55;
+    color: var(--muted); text-align: center;
+  }
+  .actions { padding: 0 18px 22px; display: flex; flex-direction: column; gap: 10px; }
+  button {
+    font-family: inherit; cursor: pointer; border: none; border-radius: 12px;
+    font-weight: 700; font-size: 14px; padding: 14px 16px;
+    transition: transform 0.12s ease, filter 0.15s ease;
+  }
+  button:active { transform: scale(0.97); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--sky), #005A94);
+    color: #fff; box-shadow: 0 8px 24px rgba(0,119,194,0.35);
+  }
+  .meta {
+    padding: 0 22px 22px; font-size: 11.5px; color: var(--muted);
+    text-align: center; line-height: 1.5;
+  }
+  .meta strong { color: #CBD5E1; }
+  .info-box {
+    margin: 0 18px 18px; padding: 14px; border-radius: 12px;
+    background: rgba(0,119,194,0.12); border: 1px solid rgba(124,192,255,0.2);
+    font-size: 12.5px; color: #B8D4F0; line-height: 1.5; text-align: left;
+  }
+  .info-box strong { color: #fff; }
+</style>
+</head>
+<body>
+  <div class="phone" role="application" aria-label="City Legacy Verify Email">
+    <div class="status-bar">
+      <span id="clock">--:--</span>
+      <span>Verify Email</span>
+    </div>
+    <div class="header">
+      <div class="logo" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <h1>City Legacy Bank</h1>
+      <p>Email verification codes</p>
+      <div class="badge-row"><span class="badge">Live · TOTP</span></div>
+    </div>
+
+    <div class="otp-card">
+      <div class="purpose">Verify email code</div>
+      <div class="otp-digits" id="otpDisplay">–––––</div>
+      <div class="timer-row">
+        <span>Refreshes in</span>
+        <strong id="timerText">0:00</strong>
+      </div>
+      <div class="timer-bar">
+        <div class="timer-fill" id="timerFill"></div>
+      </div>
+    </div>
+
+    <p class="hint">
+      Enter this 5-digit code on the City Legacy Bank sign-in page when asked to verify your email.
+      A new code is generated every 30 seconds. No connection to the bank site is required.
+    </p>
+
+    <div class="info-box">
+      <strong>Cross-site ready</strong><br>
+      This verify-email page works on its own URL. The bank site uses the same time-based algorithm and shared secret, so codes match even when both sites are hosted on different domains.
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn-primary" id="copyBtn">Copy code</button>
+    </div>
+
+    <div class="meta">
+      Demo bank login: <strong>Deputy11</strong> / <strong>202030</strong><br>
+      Transaction PIN: <strong>2468</strong>
+    </div>
+  </div>
+
+<script>
+/* Shared TOTP algorithm — must match city-legacy-bank.html exactly */
+(function () {
+  var SECRET = 'CITY-LEGACY-BANK-OTP-V1';
+  var STEP_SEC = 30; // code lifetime
+
+  function hashStr(s) {
+    var h = 2166136261;
+    for (var i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+
+  /** 5-digit OTP for a given time slot */
+  window.clbTotpAt = function(slot) {
+    var h = hashStr(SECRET + '|' + String(slot));
+    return String(h % 100000).padStart(5, '0');
+  };
+
+  window.clbCurrentTotp = function() {
+    var slot = Math.floor(Date.now() / 1000 / STEP_SEC);
+    return { code: window.clbTotpAt(slot), slot: slot, step: STEP_SEC };
+  };
+
+  function $(id) { return document.getElementById(id); }
+
+  function updateClock() {
+    var d = new Date();
+    $('clock').textContent = d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function tick() {
+    var now = Date.now() / 1000;
+    var slot = Math.floor(now / STEP_SEC);
+    var elapsed = now - slot * STEP_SEC;
+    var remaining = STEP_SEC - elapsed;
+    var code = window.clbTotpAt(slot);
+
+    $('otpDisplay').textContent = code;
+    var sec = Math.ceil(remaining);
+    $('timerText').textContent = '0:' + String(sec).padStart(2, '0');
+    var pct = (remaining / STEP_SEC) * 100;
+    var fill = $('timerFill');
+    fill.style.width = pct + '%';
+    fill.className = 'timer-fill' + (pct < 25 ? ' danger' : pct < 50 ? ' warn' : '');
+    updateClock();
+  }
+
+  $('copyBtn').addEventListener('click', function () {
+    var code = $('otpDisplay').textContent.replace(/\D/g, '');
+    if (!code || code.length < 5) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(function () {
+        $('copyBtn').textContent = 'Copied!';
+        setTimeout(function () { $('copyBtn').textContent = 'Copy code'; }, 1400);
+      });
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = code;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      $('copyBtn').textContent = 'Copied!';
+      setTimeout(function () { $('copyBtn').textContent = 'Copy code'; }, 1400);
+    }
+  });
+
+  tick();
+  setInterval(tick, 200);
+})();
+</script>
+</body>
+</html>
